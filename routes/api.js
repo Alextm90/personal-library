@@ -82,15 +82,16 @@ module.exports = function (app) {
 
     .delete(async function (req, res) {
       const bookid = req.params.id;
-
+      try {
       const book = await Books.findById(bookid);
 
       if (!book) return res.json("no book exists");
 
       const deleted = await Books.findOneAndDelete(bookid);
 
-      return res.json("delete successful");
-
-      //if successful response will be 'delete successful'
+      return res.json("delete successful");   
+      } catch (error) {
+        return res.json("no book exists")
+      }
     });
 };
