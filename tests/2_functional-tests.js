@@ -165,7 +165,6 @@ suite("Functional Tests", function () {
               comment: "Second comment",
             })
             .end(function (err, res) {
-              console.log(res.body, 'boyd')
               assert.equal(res.status, 200);
               assert.equal(res.body, "no book exists");
               done();
@@ -173,14 +172,28 @@ suite("Functional Tests", function () {
         });
       }
     );
+    suite("DELETE /api/books/[id] => delete book object id", function () {
+      test("Test DELETE /api/books/[id] with valid id in db", function (done) {
+        chai
+          .request(server)
+          .delete("/api/books/" + id)
+          .end(function (err, res) {
+            assert.equal(res.status, 200);
+            assert.equal(res.body, "delete successful");
+            done();
+          });
+      });
+
+      test("Test DELETE /api/books/[id] with id not in db", function (done) {
+        chai
+          .request(server)
+          .delete("/api/books/invalid")
+          .end(function (err, res) {
+            assert.equal(res.status, 200);
+            assert.equal(res.body, "no book exists");
+            done();
+          });
+      });
+    });
   });
 });
-
-// suite("DELETE /api/books/[id] => delete book object id", function () {
-//   test("Test DELETE /api/books/[id] with valid id in db", function (done) {
-//     //done();
-//   });
-
-//   test("Test DELETE /api/books/[id] with  id not in db", function (done) {
-//     //done();
-//   });
